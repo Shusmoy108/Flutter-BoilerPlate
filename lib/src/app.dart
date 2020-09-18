@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterboilerplate/src/pages/home/homepage.dart';
 import 'package:flutterboilerplate/src/pages/login/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data) {
-              return LoginScreen();
+              return Home("");
             } else {
               return LoginScreen();
             }

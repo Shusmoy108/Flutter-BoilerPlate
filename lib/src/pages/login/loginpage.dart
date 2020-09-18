@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:flutterboilerplate/src/pages/home/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const users = const {
   '01819648302': '12345',
@@ -13,31 +15,19 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenForm extends State<LoginScreen> {
 
   String password="",mobile="";
-  int x=-1;
+  bool login=true;
   @override
-  Future signup(context){
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => Scaffold(),
-
-          //RegisterForm(),
-    ));
-  }
-  Future login(context){
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => Scaffold(),
-    ));
-  }
   Duration get loginTime => Duration(milliseconds: 2250);
   Future<String> _signup(LoginData data) {
     setState(() {
   mobile=data.name;
   password=data.password;
-  x=0;
+  login=false;
   });
   print('Name: ${data.name}, Password: ${data.password}');
   return Future.delayed(loginTime).then((_) {
 //      if (!users.containsKey(data.name)) {
-//        return 'Username not exists';
+//        return 'Mobile Number not exists';
 //      }
 //      if (users[data.name] != data.password) {
 //        return 'Password does not match';
@@ -49,7 +39,7 @@ class LoginScreenForm extends State<LoginScreen> {
     setState(() {
       mobile=data.name;
       password=data.password;
-      x=1;
+     login=true;
     });
     print('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
@@ -67,6 +57,21 @@ class LoginScreenForm extends State<LoginScreen> {
       return "Invalid mobile number";
     }
   }
+  _saveAuthData()async{
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool('auth', true);
+    sp.setString("mobile", mobile);
+  }
+  Future _submit(){
+ _saveAuthData();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return Home("as");
+        },
+      ),
+    );
+  }
   Widget build(BuildContext context) {
     final inputBorder = BorderRadius.vertical(
       bottom: Radius.circular(10.0),
@@ -79,17 +84,7 @@ class LoginScreenForm extends State<LoginScreen> {
       onLogin: _login,
       onSignup: _signup,
       emailValidator: emailValidator,
-      onSubmitAnimationCompleted: () {
-        if(x==0){
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          //builder: (context) => RegisterForm(mobile,password),
-        ));}
-        if(x==1){
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            //builder: (context) => StudentHome(mobile),
-          ));
-        }
-      },
+      onSubmitAnimationCompleted: _submit,
       onRecoverPassword: (_) => Future(null),
       messages: LoginMessages(
         usernameHint: 'Mobile Number',
