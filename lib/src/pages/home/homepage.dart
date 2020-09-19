@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterboilerplate/src/components/buttons/joinbutton.dart';
 import 'package:flutterboilerplate/src/pages/login/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -104,7 +103,30 @@ class _HomeState extends State<Home> {
             },)
           ],
         ),
-        body:Container(),
+        body:Container(
+          child: ListView(
+            children: <Widget>[
+              Text("Normal Font Example",style: TextStyle( fontSize: 20),),
+              Text("ProximaNova Font Example",style: TextStyle(fontFamily: "ProximaNova", fontSize: 20),),
+              Text("ProximaNova Italic style Font Example",style: TextStyle(fontFamily: "ProximaNova", fontSize: 20,fontStyle: FontStyle.italic),),
+              Text("ProximaNova w700 Font Example",style: TextStyle(fontFamily: "ProximaNova", fontSize: 20,fontWeight: FontWeight.w700),),
+              Text("Image Example",style: TextStyle( fontSize: 20,fontWeight: FontWeight.w700),),
+              Card(
+                semanticContainer: true,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: Image.asset(
+                  'images/joker.jpg',
+                  fit: BoxFit.fill,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                elevation: 5,
+                margin: EdgeInsets.all(10),
+              ),
+            ],
+          ),
+        ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.teal,
